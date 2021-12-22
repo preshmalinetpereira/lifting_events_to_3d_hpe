@@ -27,7 +27,7 @@ setuptools.setup(
     url='https://github.com/iit-pavis/lifting_events_to_3d_hpe',
     install_requires=[
         'albumentations',
-        'opencv-python==4.2.0.34',
+        'opencv-python==4.4.0.46',
         'h5py',
         'scikit-image',
         'scikit-learn',

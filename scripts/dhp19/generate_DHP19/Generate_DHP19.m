@@ -11,6 +11,7 @@
 
    % Set the paths of code repository folder, data folder and output folder
    % where to generate files of accumulated events.
+   %F:\MOSAIC Lab\DHP19\Github\lifting_events_to_3d_hpe\scripts\dhp19\generate_DHP19
    rootCodeFolder = '/home/gianscarpe/dev/event-based-monocular-hpe/scripts/dhp19/generate_DHP19'; % root directory of the git repo.
    rootDataFolder = '/data/rslsync/Resilio Sync/DHP19'; % root directory of the data downloaded from resiliosync.
    outDatasetFolder = '/data/gscarpellini/new_vowel';

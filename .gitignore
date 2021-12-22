@@ -68,3 +68,6 @@ git
 *.png
 Pipfile
 Pipfile.lock
+
+#folders
+ve/
