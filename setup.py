@@ -41,6 +41,7 @@ setuptools.setup(
         'torchvision',
         'tqdm',
         'segmentation_models_pytorch',
+        'numpy'
     ],
     packages=setuptools.find_packages(exclude=["tests", "tests/*"]),
     test_suite="tests",

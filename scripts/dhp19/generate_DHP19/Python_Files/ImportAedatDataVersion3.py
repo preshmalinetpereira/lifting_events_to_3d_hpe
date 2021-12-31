@@ -21,7 +21,7 @@ Building large arrays,
 """
 
 import struct
-
+import math
 import numpy as np
 
 
@@ -123,8 +123,8 @@ def ImportAedatDataVersion3(info):
             info['numPackets'] = packetCount
             break
         packetPointers[packetCount] = info['fileHandle'].tell - 28
-        if mod(packetCount, 100) == 0 :
-            print 'packet: %d; file position: %d MB' % (packetCount, math.floor(info['fileHandle'].tell / 1000000))         
+        if np.mod(packetCount, 100) == 0 :
+            print('packet: %d; file position: %d MB'%(packetCount, math.floor(info['fileHandle'].tell / 1000000)))         
         if info['startPacket'] > packetCount :
             # Ignore this packet as its count is too low
             eventSize = struct.unpack('I', header[4:8])[0]

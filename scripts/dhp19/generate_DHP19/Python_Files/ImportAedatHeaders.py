@@ -11,7 +11,7 @@ http://inilabs.com/support/software/fileformat/
 - It would be neater (more readable) to turn the xml cell array into a
     structure.
 """
-from snntoolbox.datasets.aedat.ImportAedatBasicSourceName import (
+from ImportAedatBasicSourceName import (
     import_aedat_basic_source_name,
 )
 

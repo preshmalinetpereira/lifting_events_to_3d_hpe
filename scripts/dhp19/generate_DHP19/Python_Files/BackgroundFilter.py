@@ -8,16 +8,18 @@ def BackgroundFilter(x,y,t,pol,cam,xdim,ydim,dt):
     #    dt= 30000 #default value for dt us
     #end
 
-    lastTimesMap=np.zeros(xdim,ydim)
-    index=np.zeros(len(t),1)
-    for i in range(1,len(t)):
-        ts=t[i], xs=x[i], ys=y[i]
-        deltaT=ts-lastTimesMap[xs,ys]
+    lastTimesMap=np.zeros((xdim,ydim))
+    index=np.zeros((len(t),1))
+    for i in range(len(t)):
+        ts=t[i]
+        xs=x[i]-1
+        ys=y[i]-1
+        deltaT=ts-lastTimesMap[xs,ys] #change to xs-1 as the value of x is as per matlab
         if deltaT>dt:
             index[i]=math.nan
     
     
-        if not (xs==1 or xs==xdim or ys==1 or ys==ydim):
+        if not (xs==0 or xs==xdim-1 or ys==0 or ys==ydim-1):
             lastTimesMap[xs-1, ys] = ts
             lastTimesMap[xs+1, ys] = ts
             lastTimesMap[xs, ys-1] = ts
@@ -26,5 +28,11 @@ def BackgroundFilter(x,y,t,pol,cam,xdim,ydim,dt):
             lastTimesMap[xs+1, ys+1] = ts
             lastTimesMap[xs-1, ys+1] = ts
             lastTimesMap[xs+1, ys-1] = ts
-        
+
+    x=x[not np.isnan(index)]
+    y=y[not np.isnan(index)]
+    t=t[not np.isnan(index)]
+    pol=pol[not np.isnan(index)]
+    cam=cam[not np.isnan(index)]
+
     return x,y,t,pol,cam

@@ -1,1 +1,1 @@
-from .ImportAedat import import_aedawwt
+from .ImportAedat import import_aedat
