@@ -1,3 +1,4 @@
+### File created by preshma
 import numpy as np
 
 def HotPixelFilter(x,y,t,pol,cam,xdim,ydim, threventhotpixel=100):
@@ -10,7 +11,7 @@ def HotPixelFilter(x,y,t,pol,cam,xdim,ydim, threventhotpixel=100):
 
     hotpixelarray=np.zeros([xdim+1,ydim+1])
     
-    for i in range(0,len(t)):
+    for i in range(len(t)):
         hotpixelarray[x[i],y[i]]=hotpixelarray[x[i],y[i]]+1 #allowed the program to start array from 1 to avoid additional computation time as this is an intermediate array
               
     selindexarray = hotpixelarray>= threventhotpixel
@@ -18,10 +19,10 @@ def HotPixelFilter(x,y,t,pol,cam,xdim,ydim, threventhotpixel=100):
 
     for k in range(len(hpx)):
         selindexvector= np.logical_and(x==hpx[k], y==hpy[k])
-        x=x[np.logical_not(selindexvector)]
-        y=y[np.logical_not(selindexvector)]
-        t=t[np.logical_not(selindexvector)]
-        pol=pol[np.logical_not(selindexvector)]
-        cam=cam[np.logical_not(selindexvector)]
+        x=x[~(selindexvector)]
+        y=y[~(selindexvector)]
+        t=t[~(selindexvector)]
+        pol=pol[~(selindexvector)]
+        cam=cam[~(selindexvector)]
     
     return x,y,t,pol,cam

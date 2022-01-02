@@ -8,6 +8,10 @@
 # ImportAedatDataVersion1or2, to account for the camera index originating
 # each event.
 #--------------------------------------------------------------------------
+
+### File created by preshma
+
+
 from datetime import datetime
 from utils import cd
 from ImportAedat import import_aedat
@@ -73,15 +77,10 @@ ymax_mask2 = 144
 ### Paths     #############################################################
 t = datetime.now().strftime("%Y_%m_%d_%H%M%S")
 
-DVSrecFolder = os.path.join(rootDataFolder,'DVS_movies/') #fullfile(rootDataFolder,'DVS_movies/')
-viconFolder = os.path.join(rootDataFolder,'Vicon_data/') #fullfile(rootDataFolder,'Vicon_data/')
-#--completed till here----
+DVSrecFolder = os.path.join(rootDataFolder,'DVS_movies/') 
+viconFolder = os.path.join(rootDataFolder,'Vicon_data/') 
 # output directory where to save files after events accumulation.
 out_folder_append = "npy_dataset_" + str(eventsPerFrame) + "_events/"
-
-
-# addpath(fullfile(rootCodeFolder, 'generate_DHP19/'))
-# addpath(fullfile(rootCodeFolder, 'read_aedat/'))
 
 # Setup output folder path, according to accumulation type and spatial resolution.
 outputFolder = os.path.join(outDatasetFolder, out_folder_append,str(reshapex)+"x"+str(reshapey))
@@ -141,8 +140,6 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
                     
         print(str(fileIdx) +' '+ str(aedatPath))
         recLabel = (subj_string+'_'+str(sess)+'_'+str(mov)+'.mat')
-        # if recLabel not in ["S1_4_2", "S4_3_4", "S4_3_6", "S14_5_3"]:
-        #   pass
 
         labelPath = os.path.join(viconFolder, recLabel)
         assert(os.path.isfile(labelPath)==True)
@@ -160,11 +157,11 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
 
           XYZPOS = io.loadmat(labelPath)
                           
-          events = aedat['data']['polarity']['timeStamp'] #np.int64(aedat.data.polarity.timeStamp)
+          events = aedat['data']['polarity']['timeStamp'] 
                           
           ### conditions on special events ###
           try:
-            specialEvents = aedat['data']['special']['timeStamp'] #np.int64(aedat.data.special.timeStamp)
+            specialEvents = aedat['data']['special']['timeStamp'] 
             numSpecialEvents = len(specialEvents)
                               
             if save_log_special_events:
@@ -238,11 +235,6 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
         else:
           print('%d, File already esists: %s\n', numConvertedFiles, out_file)
           numConvertedFiles = numConvertedFiles +1
-                          
-                    # end if file not exist yet condition
-              #end  loop over movements
-        #end  loop over sessions
-  # end # loop over subjects
 
   if save_log_special_events:
       fileID_specials.close()

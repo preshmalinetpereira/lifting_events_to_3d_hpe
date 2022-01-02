@@ -1,3 +1,5 @@
+### File created by preshma
+
 import math
 import numpy as np
 
@@ -21,7 +23,7 @@ def subsample(I,sizex,sizey,new_size_x,new_size_y, where_to_cut):
     
     Isub=np.zeros((new_size_x,new_size_y))
     for w in range(new_size_x):
-        for h in range(0, new_size_y):
+        for h in range(new_size_y):
             x_start=w*block_w
             y_start=h*block_h
             Isub[w,h]=np.mean(I_cut[x_start:x_start+block_w,y_start:y_start+block_h])

@@ -1,3 +1,4 @@
+### File created by preshma
 import numpy as np
 from HotPixelFilter import HotPixelFilter 
 from BackgroundFilter import BackgroundFilter
@@ -5,16 +6,9 @@ from maskRegionFilter import maskRegionFilter
 import functools
 def extract_from_aedat(aedat, events, startTime, stopTime, sx, sy, nbcam, thrEventHotPixel, dt, xmin_mask1, xmax_mask1, ymin_mask1, ymax_mask1, xmin_mask2, xmax_mask2, ymin_mask2, ymax_mask2):
     if events[-1] > events[0]:
-        # startIndex: event right after startTime
-        # stopIndex:  event right before stopTime
-        # startIndexes = np.where(events > startTime)[0]
-        #stopIndexes = np.where(events < stopTime)[0]
         startIndex = np.where(events == events[events > startTime][0])[0][0]  #startIndexes[0] 
         stopIndex  = np.where(events == events[events < stopTime][-1])[0][0] + 1 #stopIndexes[-1]
     else:
-        # special case if timeStamp overflows(for S14_1_1) 
-        #startIndexes = np.where(events == startTime)[0]
-        #stopIndexes = np.where(events == stopTime)[0]
         startIndex = np.where(events == events[events == startTime][0])[0][0] #startIndexes[0] 
         stopIndex  = np.where(events == events[events == stopTime][0])[0][0] +1 #stopIndexes[0]
     

@@ -1,20 +1,15 @@
+### File created by preshma
 import numpy as np
 import math
 
 def BackgroundFilter(x,y,t,pol,cam,xdim,ydim,dt):
-    #filter out the events that are not support the neighborhood events
-    #dt, define the time to consider an event valid or not
-    #if nargin<7
-    #    dt= 30000 #default value for dt us
-    #end
-
     lastTimesMap=np.zeros((xdim,ydim))
     index=np.zeros((len(t),1))
     for i in range(len(t)):
         ts=t[i]
-        xs=x[i]-1
+        xs=x[i]-1 #to compensate for matlab indexing starting from 1
         ys=y[i]-1
-        deltaT=ts-lastTimesMap[xs,ys] #change to xs-1 as the value of x is as per matlab
+        deltaT=ts-lastTimesMap[xs,ys] 
         if deltaT>dt:
             index[i]=math.nan
     
@@ -29,10 +24,10 @@ def BackgroundFilter(x,y,t,pol,cam,xdim,ydim,dt):
             lastTimesMap[xs-1, ys+1] = ts
             lastTimesMap[xs+1, ys-1] = ts
 
-    x=x[np.transpose(np.logical_not(np.isnan(index)))[0]]
-    y=y[np.transpose(np.logical_not(np.isnan(index)))[0]]
-    t=t[np.transpose(np.logical_not(np.isnan(index)))[0]]
-    pol=pol[np.transpose(np.logical_not(np.isnan(index)))[0]]
-    cam=cam[np.transpose(np.logical_not(np.isnan(index)))[0]]
+    x=x[np.transpose(~(np.isnan(index)))[0]]
+    y=y[np.transpose(~(np.isnan(index)))[0]]
+    t=t[np.transpose(~(np.isnan(index)))[0]]
+    pol=pol[np.transpose(~(np.isnan(index)))[0]]
+    cam=cam[np.transpose(~(np.isnan(index)))[0]]
 
     return x,y,t,pol,cam

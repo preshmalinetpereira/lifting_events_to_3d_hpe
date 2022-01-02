@@ -37,7 +37,6 @@ def ExtractEventsToFramesAndMeanLabels(
 
     # Initialization
     nbFrame_initialization = round(len(timeStamp)/eventsPerFullFrame)
-    img = np.zeros((sx*nbcam+1, sy+1))
     pose = np.zeros((13, 3))
     IMovie = np.empty([nbcam, reshapex, reshapey, nbFrame_initialization])
     IMovie.fill(np.nan)
@@ -53,13 +52,9 @@ def ExtractEventsToFramesAndMeanLabels(
 
     
     for idx in range(len(timeStamp)):
-
-        coordx = X[idx]
-        coordy = y[idx]
         
         # Constant event count accumulation.
         counter = counter + 1
-        img[coordx,coordy] = img[coordx,coordy] + 1
 
         if (counter >= countPerFrame):
             nbFrame = nbFrame + 1
@@ -71,40 +66,7 @@ def ExtractEventsToFramesAndMeanLabels(
             # the generation of frames stops.
             if k > len(XYZPOS['XYZPOS']['head'][0][0]):
                 break
-            
-            img = np.delete(np.delete(img, -1,-1), 0, 0)
-            # arrange image in channels.
-            I1=img[0:sx,:]
-            I2=img[sx:2*sx,:]
-            I3=img[2*sx:3*sx,:]
-            I4=img[3*sx:4*sx,:]
-            
-            # subsampling
-            if do_subsampling:
-              I1s = subsample(I1,sx,sy,reshapex,reshapey, 'center')
-              # different crop location as data is shifted to right side.
-              I2s = subsample(I2,sx,sy,reshapex,reshapey, 'begin')
-              I3s = subsample(I3,sx,sy,reshapex,reshapey, 'center')
-              I4s = subsample(I4,sx,sy,reshapex,reshapey, 'center') 
-            else:
-              I1s = I1
-              I2s = I2
-              I3s = I3
-              I4s = I4
-            # end
-              
-            # Normalization
-            I1n = normalizeImage3Sigma(I1s) 
-            I2n = normalizeImage3Sigma(I2s) 
-            I3n = normalizeImage3Sigma(I3s) 
-            I4n = normalizeImage3Sigma(I4s) 
-
-            # #
-            IMovie[0,:,:,nbFrame] = I1n
-            IMovie[1,:,:,nbFrame] = I2n
-            IMovie[2,:,:,nbFrame] = I3n
-            IMovie[3,:,:,nbFrame] = I4n
-            
+                    
             # #
             pose[0,:] = np.nanmean(XYZPOS['XYZPOS']['head'][0][0][last_k:k,:],0)
             pose[1,:] = np.nanmean(XYZPOS['XYZPOS']['shoulderR'][0][0][last_k:k,:],0)
@@ -125,28 +87,15 @@ def ExtractEventsToFramesAndMeanLabels(
             last_k = k
             
             # initialize for next frame.            
-            plt.imshow(I2s)
-            plt.show()
-            plt.pause(0.000000001)
             counter = 0
-            img = np.zeros([sx*nbcam+1,sy+1])
 
     print('Number of frame: ' + str(nbFrame))
     fileID.write('%s \t frames: %d\n'%(fileName, nbFrame)) 
     
     if saveHDF5 == 1:
-        DVSfilenameh5 = fileName + '.h5'
-        IMovie = IMovie[:,:,:,0:nbFrame]
         
         if convert_labels == True:
             Labelsfilenameh5 = fileName + '_label.h5'
             poseMovie = poseMovie[:,:,0:nbFrame]
-        
-        if os.path.isfile(DVSfilenameh5):
-            return
-        else:
-            f = h5py.File(str(DVSfilenameh5), 'w')
-            f.create_dataset(DVSfilenameh5,data = IMovie, dtype='i8')
-            if convert_labels == True:
-              f = h5py.File(str(Labelsfilenameh5), 'w')
-              f.create_dataset(Labelsfilenameh5,data =poseMovie, dtype='i8')
+            f = h5py.File(str(Labelsfilenameh5), 'w')
+            f.create_dataset(Labelsfilenameh5,data =poseMovie, dtype='i8')
