@@ -40,8 +40,8 @@ eventsPerFrame = 7500
 # ca# Flag and sizes for subsampling the original DVS resolution.
 # If no subsample, keep (sx,sy) original img size.
 do_subsampling = False #change to False
-reshapex = sx #change to sx
-reshapey = sy #change to sy
+reshapex = sx #int(sx/2) #change to sx
+reshapey = sy #int(sy/2) #change to sy
 
 # Flag to save accumulated recordings.
 saveHDF5 = True
@@ -53,7 +53,7 @@ save_log_special_events = False
 ###########################################################################
 
 # Hot pixels threshold (pixels spiking above threshold are filtered out).
-thrEventHotPixel = 1*10^4
+thrEventHotPixel = 1*(10**4)
 
 # Background filter: events with less than dt (us) to neighbors pass through.
 dt = 70000
@@ -156,7 +156,7 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
         # extract and accumulate if the output file is not already
         # generated and if the input aedat file exists.
         if not(os.path.isfile(out_file+'.h5') == True) and (os.path.isfile(aedatPath)==True):
-          aedat = import_aedat({'filePathAndName': PureWindowsPath(movementsPath, movString+'.aedat'), 'fileHandle' : movString+'.aedat'})
+          aedat = import_aedat({'filePathAndName': PureWindowsPath(movementsPath, movString+'.aedat'), 'fileHandle' : movString+'.aedat', 'dataTypes' :{'polarity', 'special'}})
 
           XYZPOS = io.loadmat(labelPath)
                           
@@ -175,7 +175,7 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
               fileID_specials.write('%s \t %s\n'%(aedatPath, specials_))
             # log_special_events
                               
-            n = len(XYZPOS['XYZPOS']['head'])*10000
+            n = len(XYZPOS['XYZPOS']['head'][0][0])*10000
                               
             if numSpecialEvents == 0:
               # the field aedat.data.special does not exist
@@ -185,14 +185,14 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
               if (specialEvents-min(events)) > (max(events)-specialEvents):
                 # The only event is closer to the end of the recording.
                 stopTime = specialEvents
-                startTime = math.floor(stopTime - n)
+                startTime = (stopTime - n)
               else:
                 startTime = specialEvents
-                stopTime = math.floor(startTime + n)                     
+                stopTime = startTime + n          
             elif (numSpecialEvents == 2) or (numSpecialEvents == 4):
               # just get the minimum value, the others are max 1
               # timestep far from it.
-              special = specialEvents[1] #min(specialEvents)                
+              special = specialEvents[0] #min(specialEvents)                
               ### special case, for S14_1_1 ###
                 # if timeStamp overflows, then get events only
                 # until the overflow.
@@ -204,10 +204,10 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
                 if (special-events[0]) > (events[-1]-special):
                     # The only event is closer to the end of the recording.
                     stopTime = special
-                    startTime = math.floor(stopTime - n)
+                    startTime = (stopTime - n)
                 else:
                     startTime = special
-                    stopTime = math.floor(startTime + n)                   
+                    stopTime = startTime + n          
             elif (numSpecialEvents == 3) or (numSpecialEvents == 5):
                 # in this case we have at least 2 distant special
                 # events that we consider as start and stop.

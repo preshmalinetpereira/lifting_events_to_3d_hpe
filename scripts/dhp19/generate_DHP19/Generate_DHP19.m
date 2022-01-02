@@ -249,7 +249,7 @@ elseif (numSpecialEvents == 2) || (numSpecialEvents == 4)
                             startTime = special;
                             stopTime = max(events);
                             
-                            
+                             
                             %%% regular case %%%
                         else
                             if (special-events(1)) > (events(end)-special)

@@ -29,10 +29,10 @@ def BackgroundFilter(x,y,t,pol,cam,xdim,ydim,dt):
             lastTimesMap[xs-1, ys+1] = ts
             lastTimesMap[xs+1, ys-1] = ts
 
-    x=x[not np.isnan(index)]
-    y=y[not np.isnan(index)]
-    t=t[not np.isnan(index)]
-    pol=pol[not np.isnan(index)]
-    cam=cam[not np.isnan(index)]
+    x=x[np.transpose(np.logical_not(np.isnan(index)))[0]]
+    y=y[np.transpose(np.logical_not(np.isnan(index)))[0]]
+    t=t[np.transpose(np.logical_not(np.isnan(index)))[0]]
+    pol=pol[np.transpose(np.logical_not(np.isnan(index)))[0]]
+    cam=cam[np.transpose(np.logical_not(np.isnan(index)))[0]]
 
     return x,y,t,pol,cam

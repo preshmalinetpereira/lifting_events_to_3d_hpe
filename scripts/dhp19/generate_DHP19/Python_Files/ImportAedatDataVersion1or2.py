@@ -62,9 +62,10 @@ def import_aedat_dataversion1or2(info):
 
     num_events_to_read = int(info['endEvent'] - info['startEvent'])
 
+    startEvent  = 1 if info['startEvent']==0 else info['startEvent']
     # Read events
     file_handle.seek(
-        info['beginningOfDataPointer'] + num_bytes_per_event * info['startEvent']
+        info['beginningOfDataPointer'] + num_bytes_per_event * startEvent
     )
     all_events = np.fromfile(file_handle, addr_precision, num_events_to_read)
 
@@ -96,6 +97,7 @@ def import_aedat_dataversion1or2(info):
     polarity_logical = np.logical_and(
         np.logical_not(aps_or_imu_logical), np.logical_not(signal_or_special_logical)
     )
+    specialLogical = np.logical_and(np.logical_not(aps_or_imu_logical), (signal_or_special_logical))
 
     # These masks are used for both frames and polarity events, so are defined
     # outside of the following if statement
@@ -107,6 +109,11 @@ def import_aedat_dataversion1or2(info):
     camera_mask = int('F', 16)
     print("ok")
     output = {'data': {}}
+
+    if ('dataTypes' not in info or 'special' in info['dataTypes']) and any(specialLogical):
+        output['data']['special'] = {}
+        output['data']['special']['timeStamp'] = all_ts[specialLogical]
+
 
     # Polarity(DVS) events
     if ('dataTypes' not in info or 'polarity' in info['dataTypes']) and any(
@@ -148,23 +155,18 @@ def import_aedat_dataversion1or2(info):
     output['info']['firstTimeStamp'] = np.infty
     output['info']['lastTimeStamp'] = 0
 
+    if 'special' in output['data']:
+        output['data']['special']['numEvents'] = len(output['data']['special']['timeStamp'])
+        if (output['data']['special']['timeStamp'][0] < output['info']['firstTimeStamp']):
+            output['info']['firstTimeStamp'] = output['data']['special']['timeStamp'][0]
+        if (output['data']['special']['timeStamp'][-1] > output['info']['lastTimeStamp']):
+            output['info']['lastTimeStamp'] = output['data']['special']['timeStamp'][-1]
+
     if 'polarity' in output['data']:
-        output['data']['polarity']['numEvents'] = len(
-            output['data']['polarity']['timeStamp']
-        )
-        if (
-            output['data']['polarity']['timeStamp'][0]
-            < output['info']['firstTimeStamp']
-        ):
-            output['info']['firstTimeStamp'] = output['data']['polarity']['timeStamp'][
-                0
-            ]
-        if (
-            output['data']['polarity']['timeStamp'][-1]
-            > output['info']['lastTimeStamp']
-        ):
-            output['info']['lastTimeStamp'] = output['data']['polarity']['timeStamp'][
-                -1
-            ]
+        output['data']['polarity']['numEvents'] = len(output['data']['polarity']['timeStamp'])
+        if (output['data']['polarity']['timeStamp'][0] < output['info']['firstTimeStamp']):
+            output['info']['firstTimeStamp'] = output['data']['polarity']['timeStamp'][0]
+        if (output['data']['polarity']['timeStamp'][-1] > output['info']['lastTimeStamp']):
+            output['info']['lastTimeStamp'] = output['data']['polarity']['timeStamp'][-1]
 
     return output

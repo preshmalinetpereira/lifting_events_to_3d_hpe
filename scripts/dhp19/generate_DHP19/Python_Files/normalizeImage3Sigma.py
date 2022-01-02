@@ -4,7 +4,7 @@ import math
 def normalizeImage3Sigma(img):
     m, n = img.shape
     sum_img=np.sum(img)
-    count_img=np.sum(img[img<0])
+    count_img=np.count_nonzero(img>0)
     mean_img = sum_img / count_img
     var_img=var(img[img>0])
     sig_img = np.sqrt(var_img)
@@ -15,7 +15,7 @@ def normalizeImage3Sigma(img):
     numSDevs = 3.0
     #Rectify polarity=true
     meanGrey=0
-    range= numSDevs * sig_img
+    range_= numSDevs * sig_img
     halfrange=0
     rangenew = 255
     #Rectify polarity=false
@@ -29,7 +29,7 @@ def normalizeImage3Sigma(img):
             if l==0:
                 img[i,j]=meanGrey
             if l !=0:
-                f=(l+halfrange)*rangenew/range
+                f=(l+halfrange)*rangenew/range_
                 if f>rangenew:
                    f=rangenew
                 if f<0:

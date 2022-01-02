@@ -15,7 +15,7 @@ function [x,y,t,pol,cam] = HotPixelFilter(x,y,t,pol,cam,xdim,ydim,threventhotpix
     selindexarray = hotpixelarray>= threventhotpixel; %1384x260 >= 1x1
     [hpx,hpy]=find(selindexarray); %34,34
 
-    for k=1:length(hpx)
+    for k=1:length(hpx) 
         selindexvector= x==hpx(k) & y==hpy(k);
         x=x(~selindexvector);
         y=y(~selindexvector);
