@@ -19,7 +19,7 @@ Status](https://readthedocs.org/projects/event-camera/badge/?version=latest)](ht
 - [Forked](#forked)
 
 ## Update
-Added python files to covert raw data to event frames and labels in '/scripts/dhp19/generate_DHP19/Python_Files/'
+To use Python to covert raw data to event frames and labels Follow scripts at `/scripts/dhp19/generate_DHP19/Python_Files/`
 
 ## Environment
 Create a `virtualenv` environment from `requirements.txt`. 
