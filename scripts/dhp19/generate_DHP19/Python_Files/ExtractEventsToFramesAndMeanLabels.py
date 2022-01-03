@@ -1,12 +1,13 @@
 ### File created by preshma
-import numpy as np
-from extract_from_aedat import extract_from_aedat
-from subsample import subsample
-from normalizeImage3Sigma import normalizeImage3Sigma
-import h5py
 import os
 import pickle
+
+import h5py
 import matplotlib.pyplot as plt
+import numpy as np
+from extract_from_aedat import extract_from_aedat
+from normalizeImage3Sigma import normalizeImage3Sigma
+from subsample import subsample
 
 
 def ExtractEventsToFramesAndMeanLabels(

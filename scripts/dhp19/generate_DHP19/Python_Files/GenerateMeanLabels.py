@@ -9,7 +9,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 
-def ExtractEventsToFramesAndMeanLabels(
+def GenerateMeanLabels(
             fileID, # log file
             aedat, events, eventsPerFullFrame, 
             startTime, stopTime, fileName, 

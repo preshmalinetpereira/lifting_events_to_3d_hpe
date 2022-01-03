@@ -1,16 +1,16 @@
 ### File created by preshma
 import math
-import numpy as np
-from extract_from_aedat import extract_from_aedat
-from subsample import subsample
-from normalizeImage3Sigma import normalizeImage3Sigma
-import h5py
 import os
 import pickle
+import h5py
 import matplotlib.pyplot as plt
+import numpy as np
+from extract_from_aedat import extract_from_aedat
+from normalizeImage3Sigma import normalizeImage3Sigma
+from subsample import subsample
 
 
-def ExtractEventsToFramesAndMeanLabels(
+def ExtractEventsToVoxelAndMeanLabels(
             fileID, # log file
             aedat, events, eventsPerFullFrame, 
             startTime, stopTime, fileName, 
@@ -31,7 +31,7 @@ def ExtractEventsToFramesAndMeanLabels(
 
     # Initialization
     nbFrame_initialization = round(len(timeStamp)/eventsPerFullFrame)
-    acc = np.zeros((sx*nbcam+1, sy+1, 2))
+    acc = np.zeros((sx*nbcam, sy, 2))
     save_output= True
     counter = 0
     nbFrame = -1
@@ -39,7 +39,6 @@ def ExtractEventsToFramesAndMeanLabels(
 
     plt.ion()
     fig = plt.figure()
-    countPerFrame = eventsPerFullFrame
 
     init_slice = 1
     t0 = timeStamp(init_slice)
@@ -48,8 +47,8 @@ def ExtractEventsToFramesAndMeanLabels(
 
         coordx = X[idx]
         coordy = y[idx]
-        pi = pol(idx)
-        ti = timeStamp(idx)
+        pi = pol[idx]
+        ti = timeStamp[idx]
         acc[coordx, coordy, pi] = ti
         
         # Constant event count accumulation.
