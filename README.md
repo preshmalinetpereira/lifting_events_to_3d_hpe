@@ -92,7 +92,7 @@ This framework is intended to be fully extensible. It's based upon
 
 ## Forked
 Code for "Lifting Monocular Events to 3D Human Poses" - CVPRw 2021
-Gianluca Scarpellini & pmorerio Pietro Morerio
+Authors: Gianluca Scarpellini & Pmorerio Pietro Morerio
 IIT-PAVIS
 Github: https://github.com/IIT-PAVIS/lifting_events_to_3d_hpe
 
