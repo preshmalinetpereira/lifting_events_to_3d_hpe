@@ -31,7 +31,7 @@ def ExtractEventsToVoxelAndMeanLabels(
 
     # Initialization
     nbFrame_initialization = round(len(timeStamp)/eventsPerFullFrame)
-    acc = np.zeros((sx*nbcam, sy, 2))
+    acc = np.zeros((sx*nbcam+1, sy+1, 2+1))
     save_output= True
     counter = 0
     nbFrame = -1
@@ -56,6 +56,7 @@ def ExtractEventsToVoxelAndMeanLabels(
 
         if (counter >= eventsPerFullFrame):
             t0 = timeStamp[idx]
+            acc = np.delete(np.delete(np.delete(acc,0,0), 0, 1),0,2)
             img = math.exp(-(float(t0) - acc) / delta)
             # k is the time duration (in ms) of the recording up until the
             # current finished accumulated frame.
@@ -88,7 +89,9 @@ def ExtractEventsToVoxelAndMeanLabels(
                     
             
             nbFrame = nbFrame+1
-    
+            plt.imshow(I2)
+            plt.show()
+            plt.pause(0.000000001)
             counter = 0
 
     print('Number of frame: ' + str(nbFrame))

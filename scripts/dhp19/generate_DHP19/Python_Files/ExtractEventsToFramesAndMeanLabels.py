@@ -73,7 +73,7 @@ def ExtractEventsToFramesAndMeanLabels(
             if k > len(XYZPOS['XYZPOS']['head'][0][0]):
                 break
             
-            img = np.delete(np.delete(img, -1,-1), 0, 0)
+            img = np.delete(np.delete(img,0,0), 0, 1)
             # arrange image in channels.
             I1=img[0:sx,:]
             I2=img[sx:2*sx,:]
