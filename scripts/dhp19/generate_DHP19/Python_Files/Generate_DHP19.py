@@ -13,7 +13,7 @@
 
 
 from datetime import datetime
-from ExtractEventsToTimeSurface import ExtractEventsToVoxelAndMeanLabels
+from ExtractEventsToTimeSurface import ExtractEventsToTimeSurface
 from utils import cd
 from ImportAedat import import_aedat
 from ExtractEventsToFramesAndMeanLabels import ExtractEventsToFramesAndMeanLabels
@@ -229,8 +229,8 @@ with open("%s/Fileslog_%s.log"%(log_path, t), 'w') as fileID:
           print('Processing file: ' + outDVSfile)
           print('Tot num of events in all cameras: ' + str(eventsPerFrame*nbcam))
           # Manually choose the function you want to use to generate constant-count or spatio-temporal frames
-          ExtractEventsToVoxelAndMeanLabels(fileID, aedat, events, eventsPerFrame*nbcam, startTime,stopTime,out_file,
-          #ExtractEventsToFramesAndMeanLabels(fileID, aedat, events, eventsPerFrame*nbcam, startTime,stopTime,out_file,
+          #ExtractEventsToTimeSurface(fileID, aedat, events, eventsPerFrame*nbcam, startTime,stopTime,out_file,
+          ExtractEventsToFramesAndMeanLabels(fileID, aedat, events, eventsPerFrame*nbcam, startTime,stopTime,out_file,
               XYZPOS,sx,sy,nbcam,thrEventHotPixel, dt, xmin_mask1, xmax_mask1, ymin_mask1, ymax_mask1, xmin_mask2, 
               xmax_mask2, ymin_mask2, ymax_mask2, do_subsampling, reshapex, reshapey, saveHDF5,convert_labels)
         else:

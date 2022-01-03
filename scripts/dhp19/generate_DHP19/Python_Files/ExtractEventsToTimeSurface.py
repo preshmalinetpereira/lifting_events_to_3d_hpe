@@ -10,7 +10,7 @@ from normalizeImage3Sigma import normalizeImage3Sigma
 from subsample import subsample
 
 
-def ExtractEventsToVoxelAndMeanLabels(
+def ExtractEventsToTimeSurface(
             fileID, # log file
             aedat, events, eventsPerFullFrame, 
             startTime, stopTime, fileName, 
@@ -24,11 +24,15 @@ def ExtractEventsToVoxelAndMeanLabels(
     startTime = startTime.astype(np.int32)
     stopTime  = stopTime.astype(np.int32)
     
-    # Extract and filter events from aedat
-    startIndex, stopIndex, pol, X, y, cam, timeStamp = extract_from_aedat( aedat, events, startTime, stopTime, sx, sy, nbcam, thrEventHotPixel, dt, 
-                        xmin_mask1, xmax_mask1, ymin_mask1, ymax_mask1, 
-                        xmin_mask2, xmax_mask2, ymin_mask2, ymax_mask2)
+    # # Extract and filter events from aedat
+    # startIndex, stopIndex, pol, X, y, cam, timeStamp = extract_from_aedat( aedat, events, startTime, stopTime, sx, sy, nbcam, thrEventHotPixel, dt, 
+    #                     xmin_mask1, xmax_mask1, ymin_mask1, ymax_mask1, 
+    #                     xmin_mask2, xmax_mask2, ymin_mask2, ymax_mask2)
 
+    file = open('extractfromaedat_data.txt', 'rb')
+    d = pickle.load(file)
+    startIndex, stopIndex, pol, X, y, cam, timeStamp = d['startIndex'], d['stopIndex'], d['pol'], d['X'], d['y'], d['cam'], d['timeStamp'] #For faster execution, loaded data from file
+  
     # Initialization
     nbFrame_initialization = round(len(timeStamp)/eventsPerFullFrame)
     acc = np.zeros((sx*nbcam+1, sy+1, 2+1))
@@ -56,8 +60,7 @@ def ExtractEventsToVoxelAndMeanLabels(
 
         if (counter >= eventsPerFullFrame):
             t0 = timeStamp[idx]
-            acc = np.delete(np.delete(np.delete(acc,0,0), 0, 1),0,2)
-            img = math.exp(-(float(t0) - acc) / delta)
+            img = np.exp(-(float(t0) - acc) / delta)
             # k is the time duration (in ms) of the recording up until the
             # current finished accumulated frame.
             k = int(np.floor((timeStamp[idx] - startTime)*0.0001)+1)
@@ -89,9 +92,9 @@ def ExtractEventsToVoxelAndMeanLabels(
                     
             
             nbFrame = nbFrame+1
-            plt.imshow(I2)
+            plt.imshow(V2n)
             plt.show()
-            plt.pause(0.000000001)
+            plt.pause(10**-14)
             counter = 0
 
     print('Number of frame: ' + str(nbFrame))
