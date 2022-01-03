@@ -2,7 +2,7 @@
 [![Documentation
 Status](https://readthedocs.org/projects/event-camera/badge/?version=latest)](https://event-camera.readthedocs.io/en/latest/?badge=latest)
 [![Coverage Status](https://coveralls.io/repos/github/gianscarpe/event-based-monocular-hpe/badge.svg?branch=master)](https://coveralls.io/github/gianscarpe/event-based-monocular-hpe?branch=master)
-# Lifting Monocular Events to 3D Human Poses
+# Lifting Monocular Events to 3D Human Poses - Forked and updated by me
 
 * Train classification models based on ResNet18, Resnet34, ...
 * Train 3D reconstruction models
@@ -11,11 +11,15 @@ Status](https://readthedocs.org/projects/event-camera/badge/?version=latest)](ht
   (constant-count, spatiotemporal voxelgrid)
 
 ## Table of contents
+- [Update](#update)
 - [Environment](#environment)
 - [Data](#data)
 - [Model zoo](#model-zoo)
 - [Agents](#agents)
+- [Forked](#forked)
 
+## Update
+Added python files to covert raw data to event frames and labels in '/scripts/dhp19/generate_DHP19/Python_Files/'
 
 ## Environment
 Create a `virtualenv` environment from `requirements.txt`. 
@@ -85,6 +89,12 @@ python evaluate_dhp19.py training={TASK} dataset={DATASET_REPRESENTATION} load_p
 
 This framework is intended to be fully extensible. It's based upon
 `pytorch_lighting` [[1]](#1) and `hydra` configuration files.
+
+## Forked
+Code for "Lifting Monocular Events to 3D Human Poses" - CVPRw 2021
+Gianluca Scarpellini & pmorerio Pietro Morerio
+IIT-PAVIS
+Github: https://github.com/IIT-PAVIS/lifting_events_to_3d_hpe
 
 ## References
 <a id="1">[1]</a> 
