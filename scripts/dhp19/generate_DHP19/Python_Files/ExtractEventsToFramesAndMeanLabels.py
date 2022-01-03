@@ -130,7 +130,7 @@ def ExtractEventsToFramesAndMeanLabels(
             plt.show()
             plt.pause(0.000000001)
             counter = 0
-            img = np.zeros([sx*nbcam+1,sy+1])
+            img = np.zeros((sx*nbcam+1,sy+1))
 
     print('Number of frame: ' + str(nbFrame))
     fileID.write('%s \t frames: %d\n'%(fileName, nbFrame)) 
