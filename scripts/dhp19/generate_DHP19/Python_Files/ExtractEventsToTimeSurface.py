@@ -41,7 +41,7 @@ def ExtractEventsToVoxelAndMeanLabels(
     fig = plt.figure()
 
     init_slice = 1
-    t0 = timeStamp(init_slice)
+    t0 = timeStamp[init_slice]
     
     for idx in range(len(timeStamp)):
 
